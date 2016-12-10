@@ -1,4 +1,3 @@
 node_modules/**
-build/**
+dist/**
 client/index.html
-scripts/**
