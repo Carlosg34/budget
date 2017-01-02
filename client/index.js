@@ -1,4 +1,4 @@
-import 'babel-polyfill'
+// import 'babel-polyfill'
 
 import React from 'react'
 import { render } from 'react-dom'
@@ -16,6 +16,9 @@ const boundRouterMiddleware = routerMiddleware(browserHistory)
 const createStoreWithMiddleware = applyMiddleware(boundRouterMiddleware)(createStore)
 const store = createStoreWithMiddleware(rootReducer, window.devToolsExtension && window.devToolsExtension())
 const history = syncHistoryWithStore(browserHistory, store)
+
+import { FocusStyleManager } from '@blueprintjs/core'
+FocusStyleManager.onlyShowFocusOnTabs()
 
 const mountPoint = document.getElementById('root')
 

@@ -4,6 +4,8 @@ import { Router } from 'react-router'
 
 import rootRoutes from './routes/routes'
 
+import './style/style.scss'
+
 const App = ({store, history}) =>
   <Provider store={store}>
     <Router history={history} routes={rootRoutes} />

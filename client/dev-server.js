@@ -16,12 +16,6 @@ var compiler = webpack(config);
 app.use(devMiddleware(compiler, {
   publicPath: config.output.publicPath,
   historyApiFallback: true,
-  // proxy: {
-  //   '/api': {
-  //     target: 'http://'
-  //   }
-  // },
-  // only output errors to console
   stats: 'errors-only'
 }));
 
@@ -37,10 +31,6 @@ app.use("/api/*", function(req, res) {
     }
   });
 });
-//
-// app.get('*', function (req, res) {
-//   res.sendFile(path.join(__dirname, 'index.html'));
-// });
 
 app.listen(3000, function (err) {
   if (err) {

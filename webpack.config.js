@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+// const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const os = require('os')
 
 const PATHS = {
@@ -18,9 +18,6 @@ const PATHS = {
 
 // Webpack dev server port
 const PORT = 3000
-
-// Enable production source maps
-const ENABLE_PROD_SRC_MAPS = false
 
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: PATHS.html,
@@ -47,34 +44,29 @@ module.exports = env => {
   if (env.dev) {
    // Source maps enable breakpoints and stepping through the original ES6 code.
     webpackConfig.devtool = 'inline-source-map'
-  } else if (ENABLE_PROD_SRC_MAPS) {
-    // A source map in production enables errors to be reported with the real file name and line number logged in the
-    // browser console. Set ENABLE_PROD_SRC_MAPS to false to disable source maps completely from production loads.
-    webpackConfig.devtool = 'cheap-module-source-map'
   }
 
   // // the entry points of the bundle
   webpackConfig.entry = {
     // our top level code and everything that doesn't slot into other chunks
 
-
     // vendor code that is likely to be used everywhere
     vendor: [
-      'babel-polyfill',
       'react',
       'react-dom',
       'react-redux',
       'react-router',
       'react-router-redux',
-      'redux'
+      'redux',
+      // 'redux-saga',
+      // 'antd'
     ]
   }
 
   if (env.dev) {
     webpackConfig.entry.main = [
-      'react-hot-loader/patch',
       'webpack-hot-middleware/client',
-      // 'webpack/hot/only-dev-server',
+      'react-hot-loader/patch',
       PATHS.app
     ]
   } else {
@@ -120,7 +112,7 @@ module.exports = env => {
   // options affecting modules, where a module is any object that contributes the creation of build artifacts
   webpackConfig.module = {
     // think of loaders as transformations performed on a given file type(s)
-    loaders: [
+    rules: [
       {
         // the file to run the loaders against (*.js and *.jsx)
         test: /(\.js|\.jsx)$/,
@@ -132,14 +124,11 @@ module.exports = env => {
         loaders: ['babel-loader?presets[]=react,presets[]=es2015,presets[]=stage-2', 'eslint-loader']
       },
       {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style-loader',
-          loader: ['css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]']
-        })
+        test: /\.scss$/,
+        loaders: ["style-loader", "css-loader", "sass-loader"]
       },
       {
-        test: /\.json/,
+        test: /\.json$/,
         loader: 'json-loader'
       },
       {
@@ -177,13 +166,13 @@ module.exports = env => {
     // TODO - Consider other plugins to balance out our chunking. Things like max number of chunks, size, etc.
     // i.e. LimitChunkCountPlugin(), MinChunkSizePlugin()
     // new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
-
-    // Moves every styling chunk into a separate CSS file
-    new ExtractTextPlugin({
-      filename: '[name].[id].style.css',
-      // extract only from the initial chunk
-      allChunks: false
-    }),
+    //
+    // // Moves every styling chunk into a separate CSS file
+    // new ExtractTextPlugin({
+    //   filename: '[name].[id].style.css',
+    //   // extract only from the initial chunk
+    //   allChunks: false
+    // }),
 
     new webpack.ProvidePlugin({
       'fetch': 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch'
@@ -206,25 +195,6 @@ module.exports = env => {
       new webpack.optimize.AggressiveMergingPlugin()
       // The script CLI command -p does an uglify, also the CLI version arranges to load the minified React libs.
     )
-  }
-
-  webpackConfig.devServer = {
-    contentBase: PATHS.dist,
-    port: PORT,
-    // Set this as true if you want to access dev server from arbitrary url.
-    historyApiFallback: {
-      index: `/`
-    },
-
-    proxy: {
-      '/api': {
-        target: 'http://'
-      }
-    },
-
-    // only output errors to console
-    stats: 'errors-only'
-
   }
 
   return webpackConfig

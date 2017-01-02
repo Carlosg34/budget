@@ -5,5 +5,8 @@
     "react",
     "stage-2"
   ],
-  "plugins": ["react-hot-loader/babel"]
+  "plugins": [
+    "transform-runtime",
+    "react-hot-loader/babel"
+  ]
 }
