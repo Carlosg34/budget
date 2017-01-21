@@ -59,7 +59,6 @@ module.exports = env => {
       'react-router-redux',
       'redux',
       // 'redux-saga',
-      // 'antd'
     ]
   }
 
@@ -69,6 +68,8 @@ module.exports = env => {
       'react-hot-loader/patch',
       PATHS.app
     ]
+
+    webpackConfig.performance = {hints: false}
   } else {
     webpackConfig.entry.main = PATHS.app
   }

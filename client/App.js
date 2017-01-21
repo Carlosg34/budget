@@ -1,14 +1,22 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 
-import rootRoutes from './routes/routes'
+import routes from './routes/routes'
 
 import './style/style.scss'
 
-const App = ({store, history}) =>
-  <Provider store={store}>
-    <Router history={history} routes={rootRoutes} />
-  </Provider>
+class App extends Component {
+  render() {
+    const { store, history } = this.props
+    if (!this.routes) this.routes = routes
+
+    return (
+      <Provider store={store}>
+        <Router history={history} routes={this.routes} />
+      </Provider>
+    )
+  }
+}
 
 export default App

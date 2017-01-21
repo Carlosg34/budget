@@ -1,6 +1,7 @@
 import React from 'react'
 
-import AppLayout from './Home/redux/container'
+// import AppLayout from './Home/redux/container'
+import AppLayout from './Account/container'
 
 // import settingsRoutes from './Settings/routes'
 // import routersRoutes from './Routers/routes'

@@ -2,24 +2,6 @@ import React, { Component } from 'react'
 import { Tabs, TabList, Tab, TabPanel } from '@blueprintjs/core'
 
 class AccountSummary extends Component {
-  constructor (props) {
-    super(props)
-
-    // this.state = {
-    //   defaultExpandedKeys: ['00', '01'],
-    //   defaultSelectedKeys: ['00', '01'],
-    //   defaultCheckedKeys: ['00', '01']
-    // }
-  }
-
-  // onSelect = (info) => {
-  //   console.log('selected', info)
-  // }
-  //
-  // onCheck = (info) => {
-  //   console.log('onCheck', info)
-  // }
-
   render () {
     return (
       <div>

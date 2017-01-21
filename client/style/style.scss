@@ -1,2 +1,7 @@
 // @import "~@blueprintjs/core/src/blueprint.scss";
 @import "~@blueprintjs/core/dist/blueprint.css";
+@import "~@blueprintjs/table/dist/table.css";
+
+html, body {
+  margin: 0;
+}
