@@ -22,7 +22,21 @@ const sagaMiddleware = createSagaMiddleware()
 const middleware = [reduxRouterMiddleware, sagaMiddleware]
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const store = createStore(rootReducer, undefined, composeEnhancers(applyMiddleware(...middleware)))
+
+const persistedState = {
+  auth: JSON.parse(localStorage.getItem('auth')) || undefined
+}
+
+const store = createStore(
+  rootReducer,
+  persistedState,
+  composeEnhancers(applyMiddleware(...middleware))
+)
+
+store.subscribe(action => {
+  localStorage.setItem('auth', JSON.stringify(store.getState().auth))
+})
+
 const history = syncHistoryWithStore(browserHistory, store)
 
 sagaMiddleware.run(rootSaga)

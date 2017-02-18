@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+const auth = require('../middlewares/auth')
 const db = require('../db')
 
 router.get('/accounts', function (req, res) {
@@ -51,6 +52,34 @@ router.get('/accounts', function (req, res) {
     "amount": 5000
    }
   ])
+})
+
+router.get('/', auth, function (req, res) {
+  db.accounts.find(req.user.id)
+    .then(accounts => {
+      const data = accounts.map(account => ({
+        id: account.id,
+        name: account.name,
+        parentId: account.parent_id,
+        amount: 1000
+      }))
+      res.json(data)
+    })
+    .catch(error => {
+      res.status(500).json(error)
+    })
+})
+
+router.post('/', auth, function (req, res) {
+
+})
+
+router.put('/:accountId', auth, function (req, res) {
+
+})
+
+router.delete('/:accountId:', auth, function (req, res) {
+
 })
 
 module.exports = router

@@ -1,15 +1,21 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
+import { reducer as formReducer } from 'redux-form'
 
-import HomePage from '../routes/Home/redux/reducer'
-import main from './main/reducer'
+
+import auth from './auth/reducer'
 import accounts from './accounts/reducer'
 import transactions from './transactions/reducer'
 
+import main from './main/reducer'
+
 export default combineReducers({
   routing: routerReducer,
-  home: HomePage,
-  main: main,
+  form: formReducer,
+
+  auth: auth,
   accounts: accounts,
-  transactions: transactions
+  transactions: transactions,
+
+  main: main
 })

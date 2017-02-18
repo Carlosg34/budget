@@ -2,8 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 var express = require('express');
 var httpProxy = require("http-proxy");
-var devMiddleware = require('webpack-dev-middleware');
-var hotMiddleware = require('webpack-hot-middleware');
+var webpackDevMiddleware = require('webpack-dev-middleware');
+var webpackHotMiddleware = require('webpack-hot-middleware');
 var getConfig = require('../webpack.config');
 
 var config = getConfig({dev: true})
@@ -13,13 +13,14 @@ var apiProxy = httpProxy.createProxyServer();
 
 var compiler = webpack(config);
 
-app.use(devMiddleware(compiler, {
+const devMiddleware = webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath,
   historyApiFallback: true,
   stats: 'errors-only'
-}));
+})
 
-app.use(hotMiddleware(compiler));
+app.use(devMiddleware);
+app.use(webpackHotMiddleware(compiler));
 
 // Proxy api requests
 app.use("/api/*", function(req, res) {
@@ -31,6 +32,12 @@ app.use("/api/*", function(req, res) {
     }
   });
 });
+
+app.get('*', function response(req, res) {
+  res.write(devMiddleware.fileSystem.readFileSync(path.join(__dirname, '../dist/index.html')));
+  res.end();
+});
+
 
 app.listen(3000, function (err) {
   if (err) {

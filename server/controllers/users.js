@@ -84,7 +84,7 @@ router.post('/', function(req, res) {
       throw codes.usernameLength
     } else if(!req.body.password) {
       throw codes.missingPassword
-    } else if(req.body.password.length < 6 || req.body.password.length > 30) {
+    } else if(req.body.password.length < 8 || req.body.password.length > 30) {
       throw codes.passwordLength
     } else if(!req.body.email) {
       throw codes.missingEmail

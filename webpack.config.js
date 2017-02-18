@@ -12,6 +12,7 @@ const PATHS = {
   dist: path.resolve(__dirname, './dist'),
   routes: path.resolve(__dirname, './client/routes'),
   assets: path.resolve(__dirname, './client/assets'),
+  common: path.resolve(__dirname, './client/common'),
   utils: path.resolve(__dirname, './client/utils'),
   store: path.resolve(__dirname, './client/store'),
 }
@@ -97,7 +98,8 @@ module.exports = env => {
     alias: {
       assets: PATHS.assets,
       utils: PATHS.utils,
-      store: PATHS.store
+      store: PATHS.store,
+      common: PATHS.common
     },
     // When looking for index file in a folder, look for these extensions:
     extensions: ['*', '.js', '.jsx']

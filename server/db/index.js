@@ -4,6 +4,8 @@ var repos = {
   init: require('./init'),
   seed: require('./seed'),
   users: require('./users'),
+  accounts: require('./accounts'),
+  transactions: require('./transactions')
 }
 
 var options = {

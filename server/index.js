@@ -9,6 +9,7 @@ const transactionsController = require('./controllers/transactions')
 const infoController = require('./controllers/info')
 
 const app = express()
+const apiRouter = express.Router()
 
 app.use(bodyParser.json())
 
@@ -23,10 +24,14 @@ app.use(bodyParser.json())
 
 // db.testConnection()
 
-app.use('/users', usersController)
-app.use('/accounts', accountsController)
-app.use('/transactions', transactionsController)
-app.use('/info', infoController)
+
+
+apiRouter.use('/users', usersController)
+apiRouter.use('/accounts', accountsController)
+apiRouter.use('/transactions', transactionsController)
+apiRouter.use('/info', infoController)
+
+app.use('/api', apiRouter)
 
 app.use(function(error, req, res, next) {
   if (error) {
