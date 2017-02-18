@@ -1,11 +1,13 @@
 import constants from './constants'
 import jwtDecode from 'jwt-decode'
 
-export function createAccount(account) {
+export function createAccount(values, resolve, reject) {
   return {
     type: constants.CREATE_ACCOUNT,
     payload: {
-      account: account
+      values,
+      resolve,
+      reject
     }
   }
 }
@@ -13,9 +15,7 @@ export function createAccount(account) {
 export function createAccountSuccess(response) {
   return {
     type: constants.CREATE_ACCOUNT_SUCCESS,
-    payload: {
-      token: response.token
-    }
+    payload: response
   }
 }
 

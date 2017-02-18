@@ -1,13 +1,26 @@
 import React from 'react'
 import { Link } from 'react-router'
-// import { Button } from '@blueprintjs/core'
+import { Popover, Menu, MenuItem, Position } from '@blueprintjs/core'
 
-const AuthSection = ({auth}) => {
+const AuthSection = ({auth, actions}) => {
 
   if (auth.username) {
     return (
       <div>
-        {auth.username}
+
+        <Popover
+          content={
+            <Menu>
+              <MenuItem
+                iconName='log-out'
+                text='Logout'
+                onClick={actions.logout} />
+            </Menu>
+          }
+          position={Position.BOTTOM_RIGHT}>
+          <a>{auth.username}</a>
+        </Popover>
+
       </div>
     )
   } else {

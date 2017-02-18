@@ -2,15 +2,25 @@
 @import "~@blueprintjs/core/dist/blueprint.css";
 @import "~@blueprintjs/table/dist/table.css";
 
-html {
+* {
   margin: 0;
   padding: 0;
+}
+
+html {
   font-size: 62.5%;
   background-color: #f5f8fa;
+  height: 100%;
 }
 
 body {
   font-size: 1.4rem;
+  height: 100%;
+  padding-top: 50px;
+}
+
+#root, #root > div {
+  height: 100%;
 }
 
 .button-row {

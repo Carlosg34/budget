@@ -24,7 +24,7 @@ export function* fetchAccounts() {
 
 export function* fetchTransactions(action) {
   try {
-    const response = yield call(request, `/api/accounts/${action.payload.accountId}/transactions`)
+    const response = yield call(request, `/api/transactions/${action.payload.accountId}`)
     yield put(transactionActions.fetchTransactionsSuccess(action.payload.accountId, response))
   } catch (error) {
     yield put(transactionActions.fetchTransactionsError(action.payload.accountId, error))
@@ -42,6 +42,26 @@ export function* login(action) {
   }
 }
 
+export function* createAccount(action) {
+  try {
+    const response = yield call(request, '/api/users', 'POST', action.payload.values)
+    yield put(authActions.createAccountSuccess(response))
+    action.payload.resolve()
+  } catch (error) {
+
+
+    const errors = {}
+    if (error.code === 'usernameRegistered') {
+      errors.username = error.text
+    } else if (error.code === 'emailRegistered') {
+      errors.email = error.text
+    }
+
+    yield put(authActions.createAccountError(error))
+    yield call(action.payload.reject, new SubmissionError(errors))
+  }
+}
+
 export function* watchFetchAccounts() {
   yield takeEvery(accountConstants.FETCH_ACCOUNTS, fetchAccounts)
 }
@@ -54,10 +74,15 @@ export function* watchLogin() {
   yield takeEvery(authConstants.LOGIN, login)
 }
 
+export function* watchCreateAccount() {
+  yield takeEvery(authConstants.CREATE_ACCOUNT, createAccount)
+}
+
 export default function* rootSaga () {
   yield [
     watchFetchAccounts(),
     watchFetchTransactions(),
-    watchLogin()
+    watchLogin(),
+    watchCreateAccount()
   ]
 }

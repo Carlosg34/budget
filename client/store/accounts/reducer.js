@@ -1,4 +1,5 @@
 import constants from './constants'
+import authConstants from 'store/auth/constants'
 
 const handlers = {
   [constants.FETCH_ACCOUNTS]: (state, action) => ({
@@ -16,7 +17,8 @@ const handlers = {
   [constants.FETCH_ACCOUNTS_ERROR]: (state, action) => ({
     ...state,
     status: 'ERROR'
-  })
+  }),
+  [authConstants.LOGOUT]: (state, action) => defaultState
 }
 
 const defaultState = {

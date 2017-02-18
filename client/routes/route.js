@@ -3,6 +3,8 @@ import React from 'react'
 import AppLayout from './AppLayout'
 
 import loginRoute from './Login/route'
+import createAccountRoute from './CreateAccount/route'
+import accountsRoute from './Accounts/route'
 
 function errorLoading (err) {
   console.error('Dynamic page loading failed', err)
@@ -18,6 +20,8 @@ export default {
   indexRoute: { onEnter: (nextState, replace) => replace('/login') },
   childRoutes: [
     loginRoute,
+    createAccountRoute,
+    accountsRoute,
     {
       path: '*',
       getComponent (location, cb) {

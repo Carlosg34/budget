@@ -33,8 +33,9 @@ const store = createStore(
   composeEnhancers(applyMiddleware(...middleware))
 )
 
-store.subscribe(action => {
+store.subscribe(() => {
   localStorage.setItem('auth', JSON.stringify(store.getState().auth))
+  localStorage.setItem('token', store.getState().auth.token)
 })
 
 const history = syncHistoryWithStore(browserHistory, store)

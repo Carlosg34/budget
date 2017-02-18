@@ -36,6 +36,25 @@ const handlers = {
   },
   [constants.LOGOUT]: (state, action) => {
     return defaultState
+  },
+  [constants.CREATE_ACCOUNT]: (state, action) => ({
+    ...state,
+    state: 'PENDING'
+  }),
+  [constants.CREATE_ACCOUNT_SUCCESS]: (state, action) => {
+    const { token } = action.payload
+    const decodedToken = jwtDecode(token)
+
+    return {
+      ...state,
+      status: 'SUCCESS',
+      token: token,
+      id: decodedToken.id,
+      username: decodedToken.username,
+      role: decodedToken.role,
+      exp: decodedToken.exp,
+      error: undefined
+    }
   }
 }
 

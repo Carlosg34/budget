@@ -3,8 +3,10 @@ import React from 'react'
 import SideBar from './SideBar'
 import TabsView from './TabsView'
 
+import './Accounts.scss'
+
 const Account = ({}) => (
-  <div>
+  <div className='accounts__container'>
     <SideBar />
     <TabsView />
   </div>

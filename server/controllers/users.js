@@ -70,7 +70,11 @@ router.post('/login', function(req, res) {
       }
     })
     .catch(error => {
-      console.log(error)
+
+      if (error.name === 'QueryResultError') {
+        error = codes.incorrectLogin
+      }
+
       return res.status(error.status || 500).json(error)
     })
 })
@@ -103,9 +107,9 @@ router.post('/', function(req, res) {
     .then(users => {
       if(users.length > 0) {
         if(users[0].username.toLowerCase() === req.body.username.toLowerCase()) {
-          throw codes.duplicateUsername
+          throw codes.usernameRegistered
         } else {
-          throw codes.duplicateEmail
+          throw codes.emailRegistered
         }
       } else {
         return bcrypt.hash(req.body.password, config.BCRYPT_SALT_ROUNDS)
