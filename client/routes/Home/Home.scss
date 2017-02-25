@@ -1,0 +1,18 @@
+.home__container {
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // background-color: #137cbd;
+    background-color: hsl(203, 40, 60);
+
+    h1 {
+      color: #fff;
+      margin-bottom: 3.0rem;
+    }
+
+    h2 {
+      color: #fff;
+    }
+}

@@ -31,6 +31,17 @@ export function* fetchTransactions(action) {
   }
 }
 
+export function* updateTransaction(action) {
+  try {
+    const response = yield call(request, `/api/transactions/${action.payload.values.id}`, 'PUT', action.payload.values)
+    yield put(transactionActions.updateTransactionSuccess(action.payload.values.id, response))
+    action.payload.resolve()
+  } catch (error) {
+    yield put(transactionActions.updateTransactionError(action.payload.values.id, error))
+    yield call(action.payload.reject, new SubmissionError({_error: error.text || 'Request failed'}))
+  }
+}
+
 export function* login(action) {
   try {
     const response = yield call(request, '/api/users/login', 'POST', action.payload.values)
@@ -70,6 +81,10 @@ export function* watchFetchTransactions() {
   yield takeEvery(transactionConstants.FETCH_TRANSACTIONS, fetchTransactions)
 }
 
+export function* watchUpdateTransaction() {
+  yield takeEvery(transactionConstants.UPDATE_TRANSACTION, updateTransaction)
+}
+
 export function* watchLogin() {
   yield takeEvery(authConstants.LOGIN, login)
 }
@@ -81,7 +96,10 @@ export function* watchCreateAccount() {
 export default function* rootSaga () {
   yield [
     watchFetchAccounts(),
+
     watchFetchTransactions(),
+    watchUpdateTransaction(),
+
     watchLogin(),
     watchCreateAccount()
   ]

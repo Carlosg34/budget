@@ -12,6 +12,13 @@ class SideBar extends Component {
 
   onNodeClick = (node, nodePath, event) => {
     this.props.actions.openTab(node.id)
+
+    // For whatever reason, it won't switch to the new tabs if the new tab is
+    // both created and set to be the active tab at the same time.
+    // calling openTab twice in a row works around this issue.
+    window.setTimeout(() => {
+      this.props.actions.openTab(node.id)
+    }, 0)
   }
 
   onNodeCollapse = (node, nodePath, event) => {
@@ -23,6 +30,10 @@ class SideBar extends Component {
   }
 
   generateTree = (accountsArray, parent) => {
+
+    const {activeTabIndex, tabs} = this.props.main
+    const activeTab = tabs[activeTabIndex]
+    const activeTabId = activeTab ? activeTab.id : null
 
     let accounts, nodes
     if (!parent) {
@@ -41,6 +52,7 @@ class SideBar extends Component {
         label: account.name + ' - $' + (account.amount / 100).toFixed(2),
         hasCaret: false,
         isExpanded: true,
+        isSelected: account.id === activeTabId,
         iconName: 'th',
         childNodes: []
       }

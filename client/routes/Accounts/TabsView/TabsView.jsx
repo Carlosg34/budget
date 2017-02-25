@@ -30,6 +30,19 @@ class TabsView extends Component {
       )
     })
 
+    if (main.tabs.length === 0) {
+      tabs.push(
+        <Tab key={-1}>
+          Welcome
+        </Tab>
+      )
+      tabPanels.push(
+        <TabPanel key={-1}>
+          <div>Click on account on the left.</div>
+        </TabPanel>
+      )
+    }
+
     return (
       <div className='TabsView'>
         <Tabs

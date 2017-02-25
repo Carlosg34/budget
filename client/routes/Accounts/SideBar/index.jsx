@@ -7,7 +7,8 @@ import * as accountActions from 'store/accounts/actions'
 import SideBar from './SideBar'
 
 const mapStateToProps = (state) => ({
-  accounts: state.accounts
+  accounts: state.accounts,
+  main: state.main
 })
 
 const mapDispatchToProps = (dispatch) => ({

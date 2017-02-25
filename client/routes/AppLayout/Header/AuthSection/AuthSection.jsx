@@ -1,13 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { Popover, Menu, MenuItem, Position } from '@blueprintjs/core'
+import { Popover, Menu, MenuItem, Position, Button } from '@blueprintjs/core'
 
 const AuthSection = ({auth, actions}) => {
 
   if (auth.username) {
     return (
       <div>
-
         <Popover
           content={
             <Menu>
@@ -18,9 +17,8 @@ const AuthSection = ({auth, actions}) => {
             </Menu>
           }
           position={Position.BOTTOM_RIGHT}>
-          <a>{auth.username}</a>
+          <Button text={auth.username} rightIconName="cog" />
         </Popover>
-
       </div>
     )
   } else {

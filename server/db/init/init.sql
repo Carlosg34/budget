@@ -21,10 +21,8 @@ create table if not exists transactions (
 
   description varchar(255) not null,
   amount int not null,
+  date date not null,
 
   out_account_id int not null references accounts(id),
-  out_date date not null,
-
-  in_account_id int not null references accounts(id),
-  in_date date not null
+  in_account_id int not null references accounts(id)
 );

@@ -1,4 +1,5 @@
 import constants from './constants'
+import authConstants from 'store/auth/constants'
 
 const handlers = {
   [constants.OPEN_TAB]: (state, action) => {
@@ -39,7 +40,8 @@ const handlers = {
     return {...state,
       activeTabIndex: action.payload.index
     }
-  }
+  },
+  [authConstants.LOGOUT]: (state, action) => defaultState
 }
 
 const defaultState = {

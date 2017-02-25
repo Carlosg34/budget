@@ -24,3 +24,29 @@ export function fetchTransactionsError(accountId, response) {
     payload: {accountId}
   }
 }
+
+
+export function updateTransaction(values, resolve, reject) {
+  return {
+    type: constants.UPDATE_TRANSACTION,
+    payload: {values, resolve, reject}
+  }
+}
+
+export function updateTransactionSuccess(accountId, response) {
+  return {
+    type: constants.UPDATE_TRANSACTION_SUCCESS,
+    payload: {
+      transactions: response,
+      accountId: accountId
+    }
+  }
+}
+
+export function updateTransactionError(accountId, response) {
+  return {
+    type: constants.UPDATE_TRANSACTION_ERROR,
+    error: response,
+    payload: {accountId}
+  }
+}

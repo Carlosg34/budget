@@ -1,22 +1,41 @@
 const express = require('express')
 const router = express.Router()
+const auth = require('../middlewares/auth')
 
 const db = require('../db')
 
-router.get('/api/accounts/:accountId/transactions', function (req, res) {
-
-  const total = Math.floor(Math.random()*20)
-  const data = []
-  for(let i = 0; i < total; i++) {
-    data.push({
-      id: i.toString(),
-      description: 'item ' + i,
-      inAccountId: Math.random() > 0.5 ? i.toString() : Math.floor(Math.random()*10).toString(),
-      outAccountId: Math.random() > 0.5 ? i.toString() : Math.floor(Math.random()*10).toString(),
-      amount: Math.floor(Math.random()*10000)
+router.get('/:accountId', auth, function (req, res) {
+  db.transactions.find(req.user.id, Number(req.params.accountId))
+    .then(transactions => {
+      res.json(transactions.map(tx => ({
+        id: tx.id,
+        date: tx.date,
+        description: tx.description,
+        inAccountId: tx.in_account_id,
+        outAccountId: tx.out_account_id,
+        amount: tx.amount
+      })))
     })
-  }
-  res.json(data)
+    .catch(error => {
+      res.status(500).json(error)
+    })
+})
+
+router.put('/:transactionId', auth, function (req, res) {
+  db.transactions.update(Number(req.params.transactionId), req.body)
+    .then(transactions => {
+      res.json(transactions.map(tx => ({
+        id: tx.id,
+        date: tx.date,
+        description: tx.description,
+        inAccountId: tx.in_account_id,
+        outAccountId: tx.out_account_id,
+        amount: tx.amount
+      })))
+    })
+    .catch(error => {
+      res.status(500).json(error)
+    })
 })
 
 

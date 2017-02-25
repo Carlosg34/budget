@@ -1,6 +1,7 @@
 import React from 'react'
 
 import AppLayout from './AppLayout'
+import Home from './Home'
 
 import loginRoute from './Login/route'
 import createAccountRoute from './CreateAccount/route'
@@ -17,7 +18,7 @@ function loadRoute (cb) {
 export default {
   path: '/',
   component: AppLayout,
-  indexRoute: { onEnter: (nextState, replace) => replace('/login') },
+  indexRoute: {component: Home},
   childRoutes: [
     loginRoute,
     createAccountRoute,

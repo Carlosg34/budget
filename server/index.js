@@ -9,7 +9,6 @@ const transactionsController = require('./controllers/transactions')
 const infoController = require('./controllers/info')
 
 const app = express()
-const apiRouter = express.Router()
 
 app.use(bodyParser.json())
 
@@ -24,8 +23,7 @@ app.use(bodyParser.json())
 
 // db.testConnection()
 
-
-
+const apiRouter = express.Router()
 apiRouter.use('/users', usersController)
 apiRouter.use('/accounts', accountsController)
 apiRouter.use('/transactions', transactionsController)
@@ -36,12 +34,13 @@ app.use('/api', apiRouter)
 app.use(function(error, req, res, next) {
   if (error) {
     if (error instanceof SyntaxError) {
-      res.status(400).json({
-        code: 'invalidJson',
-        message: 'Invalid JSON Body'
-      })
-      return
+      error = codes.invalidJson
+      return res.status(error.status || 500).json(error)
+    } else {
+      return res.status(500).json(error)
     }
+  } else {
+
   }
   next()
 })

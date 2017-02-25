@@ -4,7 +4,7 @@ class CloseableTab extends Component {
   render() {
     return (
       <span>
-        {this.props.account.name}({this.props.account.id})
+        {this.props.account.name}
         <button
           type="button"
           className="pt-button pt-minimal pt-icon-small-cross"
