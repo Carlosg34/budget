@@ -17,26 +17,42 @@ class TabContent extends Component {
     super(props)
 
     this.state = {
-      transactions: [],
+      transactions: this.getTransactionList(props.transactions, props.accountId),
       selectedRegions: [],
       editingRow: false,
     }
   }
 
-  componentDidMount() {
-    this.props.actions.fetchTransactions(this.props.accountId)
+  componentWillReceiveProps(newProps) {
+
+    if (this.props.transactions !== newProps.transactions) {
+        this.setState({transactions: this.getTransactionList(newProps.transactions, newProps.accountId)})
+    }
   }
 
-  componentWillReceiveProps(newProps) {
-    if (this.props.transactions !== newProps.transactions) {
-      if (newProps.transactions) {
-        const transactions = Object.keys(newProps.transactions.byId).map(id => {
-          return newProps.transactions.byId[id]
-        })
-
-        this.setState({transactions: transactions})
+  getChildAccountIds(accounts, currentAccountId, list) {
+    Object.keys(accounts.byId).forEach(accountId => {
+      const account = accounts.byId[accountId]
+      if( account.parentId === currentAccountId ) {
+        list.push(Number(accountId))
+        this.getChildAccountIds(accounts, account.id, list)
       }
-    }
+    })
+    return list
+  }
+
+  getTransactionList = (transactions, accountId) => {
+
+    const accountList = [accountId]
+    this.getChildAccountIds(this.props.accounts, accountId, accountList)
+
+    return Object.keys(transactions.byId).reduce((list, id) => {
+      const transaction = transactions.byId[id]
+      if (accountList.includes(transaction.inAccountId) || accountList.includes(transaction.outAccountId)) {
+        list.push(transaction)
+      }
+      return list
+    }, [])
   }
 
   renderDateCell = (rowIndex) => {
@@ -102,8 +118,6 @@ class TabContent extends Component {
   }
 
   onEditRow = (val) => {
-    console.log()
-
     this.setState({editingRow: true})
   }
 
@@ -146,7 +160,7 @@ class TabContent extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  transactions: state.transactions.byAccountId[ownProps.accountId],
+  transactions: state.transactions,
   accounts: state.accounts
 })
 

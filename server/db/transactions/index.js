@@ -8,10 +8,9 @@ const update = loadSqlFile(__dirname, './update.sql')
 
 module.exports = (rep, pgp) => {
   return {
-    find: (userId, accountId, fromDate, toDate) =>
+    find: (userId, fromDate, toDate) =>
       rep.any(find, {
         userId: userId,
-        accountId: accountId,
         fromDate: fromDate,
         toDate: toDate
       }),

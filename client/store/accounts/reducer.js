@@ -9,7 +9,18 @@ const handlers = {
   [constants.FETCH_ACCOUNTS_SUCCESS]: (state, action) => ({
     ...state,
     status: 'SUCCESS',
+
+    // List of accounts are hashed by id, for fast lookup
     byId: action.payload.accounts.reduce((hash, account) => {
+
+      // For each account, add a list of the direct children
+      account.children = action.payload.accounts.reduce((children, otherAccount) => {
+        if(account.id === otherAccount.parentId) {
+          children.push(otherAccount.id.toString())
+        }
+        return children
+      }, [])
+
       hash[account.id] = account
       return hash
     }, {})

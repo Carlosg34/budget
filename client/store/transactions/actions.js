@@ -1,27 +1,28 @@
 import constants from './constants'
 
-export function fetchTransactions(accountId) {
+export function fetchTransactions(fromDate, toDate) {
   return {
     type: constants.FETCH_TRANSACTIONS,
-    payload: {accountId}
-  }
-}
-
-export function fetchTransactionsSuccess(accountId, response) {
-  return {
-    type: constants.FETCH_TRANSACTIONS_SUCCESS,
     payload: {
-      transactions: response,
-      accountId: accountId
+      fromDate,
+      toDate
     }
   }
 }
 
-export function fetchTransactionsError(accountId, response) {
+export function fetchTransactionsSuccess(response) {
+  return {
+    type: constants.FETCH_TRANSACTIONS_SUCCESS,
+    payload: {
+      transactions: response
+    }
+  }
+}
+
+export function fetchTransactionsError(error) {
   return {
     type: constants.FETCH_TRANSACTIONS_ERROR,
-    error: response,
-    payload: {accountId}
+    error: error
   }
 }
 
@@ -33,20 +34,18 @@ export function updateTransaction(values, resolve, reject) {
   }
 }
 
-export function updateTransactionSuccess(accountId, response) {
+export function updateTransactionSuccess(response) {
   return {
     type: constants.UPDATE_TRANSACTION_SUCCESS,
     payload: {
-      transactions: response,
-      accountId: accountId
+      transaction: response
     }
   }
 }
 
-export function updateTransactionError(accountId, response) {
+export function updateTransactionError(error) {
   return {
     type: constants.UPDATE_TRANSACTION_ERROR,
-    error: response,
-    payload: {accountId}
+    error: error
   }
 }

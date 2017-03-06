@@ -24,10 +24,10 @@ export function* fetchAccounts() {
 
 export function* fetchTransactions(action) {
   try {
-    const response = yield call(request, `/api/transactions/${action.payload.accountId}`)
-    yield put(transactionActions.fetchTransactionsSuccess(action.payload.accountId, response))
+    const response = yield call(request, '/api/transactions/')
+    yield put(transactionActions.fetchTransactionsSuccess(response))
   } catch (error) {
-    yield put(transactionActions.fetchTransactionsError(action.payload.accountId, error))
+    yield put(transactionActions.fetchTransactionsError(error))
   }
 }
 

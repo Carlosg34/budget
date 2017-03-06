@@ -4,11 +4,12 @@ const auth = require('../middlewares/auth')
 
 const db = require('../db')
 
-router.get('/:accountId', auth, function (req, res) {
-  db.transactions.find(req.user.id, Number(req.params.accountId))
+router.get('/', auth, function (req, res) {
+  db.transactions.find(req.user.id)
     .then(transactions => {
       res.json(transactions.map(tx => ({
         id: tx.id,
+        accountId: tx.account_id,
         date: tx.date,
         description: tx.description,
         inAccountId: tx.in_account_id,

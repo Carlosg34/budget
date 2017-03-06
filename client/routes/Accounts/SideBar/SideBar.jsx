@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-
 import { Classes, Tree, TreeNode } from '@blueprintjs/core'
+import formatCurrency from 'utils/formatCurrency'
 
 import styles from './SideBar.scss'
 
@@ -8,6 +8,7 @@ class SideBar extends Component {
 
   componentDidMount() {
     this.props.actions.fetchAccounts()
+    this.props.actions.fetchTransactions()
   }
 
   onNodeClick = (node, nodePath, event) => {
@@ -21,60 +22,46 @@ class SideBar extends Component {
     }, 0)
   }
 
-  onNodeCollapse = (node, nodePath, event) => {
-
-  }
-
-  onNodeExpand = (node, nodePath, event) => {
-    console.log(node, nodePath, event)
-  }
-
-  generateTree = (accountsArray, parent) => {
+  getChildAccounts = (currentAccountId) => {
+    const { accounts } = this.props
+    const currentAccount = accounts.byId[currentAccountId]
 
     const {activeTabIndex, tabs} = this.props.main
     const activeTab = tabs[activeTabIndex]
     const activeTabId = activeTab ? activeTab.id : null
 
-    let accounts, nodes
-    if (!parent) {
-      accounts = accountsArray.filter(account => !account.parentId)
-      nodes = []
-    } else {
-      accounts = accountsArray
-        .filter(account => account.parentId === parent.id)
-        .sort((a, b) => a.name.localeCompare(b.name))
-      nodes = parent.childNodes
+    const node = {
+      id: currentAccount.id,
+      label: currentAccount.name + ' - ' + formatCurrency(currentAccount.amount),
+      hasCaret: false,
+      isExpanded: true,
+      isSelected: currentAccount.id === activeTabId,
+      iconName: 'th',
+      childNodes: []
     }
 
-    accounts.forEach(account => {
-      const node = {
-        id: account.id,
-        label: account.name + ' - $' + (account.amount / 100).toFixed(2),
-        hasCaret: false,
-        isExpanded: true,
-        isSelected: account.id === activeTabId,
-        iconName: 'th',
-        childNodes: []
-      }
-      nodes.push(node)
-      this.generateTree(accountsArray, node)
+    currentAccount.children.forEach(childId => {
+      node.childNodes.push(this.getChildAccounts(childId))
     })
-    return nodes
+    return node
   }
 
   render() {
+    const { accounts } = this.props
 
-    let accountsArray = Object.keys(this.props.accounts.byId).map(id => this.props.accounts.byId[id])
-    let treeContents = this.generateTree(accountsArray)
-
+    const treeContents = []
+    Object.keys(this.props.accounts.byId).forEach(id => {
+      const account = accounts.byId[id]
+      if (!account.parentId) {
+        treeContents.push(this.getChildAccounts(id))
+      }
+    })
 
     return (
       <div className={'SideBar ' + Classes.ELEVATION_2}>
         <div>Jan 1, 2017 to Feb 1, 2017</div>
         <Tree
           onNodeClick={this.onNodeClick}
-          onNodeCollapse={this.onNodeCollapse}
-          onNodeExpand={this.onNodeExpand}
           contents={treeContents}
         />
 
